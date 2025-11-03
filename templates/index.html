@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>پنل مدیریت کاربران - بانک کشاورزی</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    body { background: #f0f7f2; font-family: 'Vazirmatn', Tahoma, Arial, sans-serif; color: #222; font-size: 16px; margin: 0; padding: 0; }
+    .container-narrow { max-width: 100%; margin: 0; padding: 20px; width: 100%; box-sizing: border-box; }
+    .header-minimal { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: #ffffff; border-radius: 20px; padding: 20px 24px; text-align: center; font-weight: 600; font-size: 1.5rem; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2); position: relative; display: flex; justify-content: center; align-items: center; }
+    .logout-btn { position: absolute; left: 24px; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); color: #ffffff; padding: 8px 16px; border-radius: 10px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 500; }
+    .logout-btn:hover { background: rgba(255, 255, 255, 0.3); border-color: rgba(255, 255, 255, 0.5); }
+    .logout-btn svg { width: 18px; height: 18px; }
+    .card-minimal { background: #ffffff; border-radius: 18px; border: 1px solid #d4edda; padding: 24px 20px; box-shadow: 0 2px 8px rgba(40, 167, 69, 0.08); }
+    .section-title { font-size: 1.05rem; font-weight: 700; color: #155724; margin-bottom: 14px; }
+    .form-control, .form-select, .btn { border-radius: 12px; }
+    .form-select { padding: 8px 12px; border: 1px solid #ced4da; background-color: #ffffff; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: left 0.75rem center; background-size: 16px 12px; padding-left: 2.5rem; cursor: pointer; transition: all 0.2s; }
+    .form-select:hover { border-color: #28a745; }
+    .form-select:focus { border-color: #28a745; box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25); }
+    .btn-primary { background: #28a745; border-color: #28a745; color: #ffffff; }
+    .btn-primary:hover { background: #218838; border-color: #1e7e34; }
+    .btn-primary:active { background: #155724 !important; border-color: #155d27 !important; }
+    .btn-soft-primary { background: #d4edda; color: #155724; border: none; }
+    .btn-soft-danger { background: #f8d7da; color: #721c24; border:none; }
+    .btn-soft-warning { background: #fff3cd; color: #856404; border:none; }
+    .btn-soft-success { background: #d1ecf1; color: #0c5460; border:none; }
+    .btn-outline-secondary { border-color: #6c757d; color: #6c757d; }
+    .btn-outline-secondary:hover { background: #6c757d; border-color: #6c757d; color: #ffffff; }
+    .table-minimal { background:#fff; border-radius:16px; overflow:hidden; }
+    .table-minimal thead th { background:#f0f7f2; color:#155724; font-weight:700; border-bottom:none; padding: 16px 12px; }
+    .table-minimal tbody td { vertical-align: middle; padding: 18px 12px; }
+    .table-minimal tbody tr { border-bottom: 2px solid #e8f5e9; }
+    .table-minimal tbody tr:hover { background-color: #f8fdf9; }
+    .table-minimal tbody tr:nth-child(even) { background-color: #fafafa; }
+    .table-minimal tbody tr:nth-child(even):hover { background-color: #f1f8f4; }
+    .search-input { background:#fbfcff; }
+    .form-hint { font-size:.86rem; color:#6b7280; }
+    input[type="password"]::-webkit-credentials-auto-fill-button,
+    input[type="password"]::-webkit-credentials-auto-fill-icon,
+    input[type="password"]::-ms-reveal,
+    input[type="password"]::-ms-clear { display: none !important; visibility: hidden !important; }
+    input[type="email"]::-webkit-contacts-auto-fill-button,
+    input[type="email"]::-webkit-credentials-auto-fill-button { display: none !important; visibility: hidden !important; opacity: 0 !important; }
+    .layer-container { position: relative; }
+    .view-layer { display: none; }
+    .view-layer.active { display: block; }
+    .toggle-btn-container { margin-bottom: 20px; display: flex; justify-content: flex-start; gap: 12px; }
+    .toggle-view-btn { background: #28a745; color: #ffffff; border: none; padding: 10px 24px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; }
+    .toggle-view-btn:hover { background: #218838; }
+    .toggle-view-btn.active { background: #155724; }
+    .alert-success { background: #d4edda; border-color: #c3e6cb; color: #155724; }
+    .alert-danger { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+  </style>
+</head>
+<body>
+<div class="container-narrow">
+  <!-- هدر + دکمه خروج -->
+  <div class="header-minimal">
+    پنل مدیریت کاربران - بانک کشاورزی
+    <button class="logout-btn" id="logoutBtn">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+      </svg>
+      خروج
+    </button>
+  </div>
+
+  <!-- پیام‌های فلش -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category == 'danger' else 'success' }} alert-dismissible fade show">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="toggle-btn-container">
+    <button id="searchUserBtn" class="toggle-view-btn active">جستجو و نمایش کاربران</button>
+    <button id="addUserBtn" class="toggle-view-btn">افزودن کاربر جدید</button>
+  </div>
+
+  <!-- لایه افزودن -->
+  <div id="addUserLayer" class="view-layer">
+    <div class="card-minimal mb-3">
+      <div class="section-title">افزودن کاربر جدید</div>
+      <form id="createUserForm" class="row g-3">
+        <div class="col-12 col-md-3">
+          <label for="username" class="form-label">نام کاربری</label>
+          <input id="username" type="text" class="form-control" placeholder="مثال: s.ahmadi" required autocomplete="off">
+          <div class="form-text form-hint">باید یکتا باشد و حداقل ۳ کاراکتر.</div>
+        </div>
+        <div class="col-12 col-md-3">
+          <label for="password" class="form-label">رمز عبور</label>
+          <div class="input-group">
+            <input id="password" type="password" class="form-control" placeholder="حداقل ۶ کاراکتر" required minlength="6" autocomplete="new-password">
+            <button class="btn btn-outline-secondary" type="button" id="togglePassword">نمایش</button>
+          </div>
+        </div>
+        <div class="col-12 col-md-3">
+          <label for="email" class="form-label">ایمیل</label>
+          <input id="email" type="email" class="form-control" placeholder="example@domain.com" required autocomplete="off">
+        </div>
+        <div class="col-12 col-md-3">
+          <label for="role" class="form-label">سطح دسترسی</label>
+          <select id="role" class="form-select" required autocomplete="off">
+            <option value="BI">BI</option>
+            <option value="Report">Report</option>
+            <option value="BI & Report">BI & Report</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-3">
+          <label class="form-label" style="visibility: hidden;">دکمه</label>
+          <button type="submit" class="btn btn-primary w-100" style="height: 38px;">افزودن</button>
+        </div>
+      </form>
+      <div id="formAlert" class="alert alert-danger mt-3 d-none"></div>
+      <div id="formSuccess" class="alert alert-success mt-3 d-none"></div>
+    </div>
+  </div>
+
+  <!-- لایه جستجو -->
+  <div id="searchLayer" class="view-layer active">
+    <div class="card-minimal mb-3">
+      <div class="row g-2 align-items-end">
+        <div class="col-12 col-md-6">
+          <label for="search" class="form-label">جستجو</label>
+          <input id="search" type="text" class="form-control search-input" placeholder="جستجو بر اساس نام کاربری، ایمیل یا سطح دسترسی…" autocomplete="off">
+        </div>
+        <div class="col-12 col-md-6 text-md-start text-center">
+          <span class="form-hint">تعداد کاربران: <strong id="userCount">0</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-minimal">
+      <div class="table-responsive">
+        <table class="table table-minimal mb-0" id="usersTable">
+          <thead>
+            <tr>
+              <th style="width:20%">نام کاربری</th>
+              <th style="width:20%" class="text-center">ایمیل</th>
+              <th style="width:20%" class="text-center">رمز عبور</th>
+              <th style="width:18%" class="text-center">سطح دسترسی</th>
+              <th class="text-center">عملیات</th>
+            </tr>
+          </thead>
+          <tbody id="usersTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal ویرایش -->
+  <div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">ویرایش کاربر</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editUserForm" class="row g-2">
+            <input type="hidden" id="editId">
+            <div class="col-12">
+              <label for="editUsername" class="form-label">نام کاربری</label>
+              <input id="editUsername" type="text" class="form-control" required autocomplete="off">
+            </div>
+            <div class="col-12">
+              <label for="editPassword" class="form-label">رمز عبور</label>
+              <div class="input-group">
+                <input id="editPassword" type="password" class="form-control" required minlength="6" autocomplete="new-password">
+                <button class="btn btn-outline-secondary" type="button" id="toggleEditPassword">نمایش</button>
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="editEmail" class="form-label">ایمیل</label>
+              <input id="editEmail" type="email" class="form-control" required autocomplete="off">
+            </div>
+            <div class="col-12">
+              <label for="editRole" class="form-label">سطح دسترسی</label>
+              <select id="editRole" class="form-select" required autocomplete="off">
+                <option value="BI">BI</option>
+                <option value="Report">Report</option>
+                <option value="BI & Report">BI & Report</option>
+              </select>
+            </div>
+          </form>
+          <div id="editAlert" class="alert alert-danger mt-2 d-none"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-soft-secondary" data-bs-dismiss="modal">انصراف</button>
+          <button type="button" id="saveEditBtn" class="btn btn-primary">ذخیره تغییرات</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal حذف -->
+  <div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">تایید حذف</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          آیا از حذف کاربر <strong id="deleteUserLabel"></strong> مطمئن هستید؟
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-soft-secondary" data-bs-dismiss="modal">انصراف</button>
+          <button type="button" id="confirmDeleteBtn" class="btn btn-danger">حذف</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal خروج -->
+  <div class="modal fade" id="logoutModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">تایید خروج</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          آیا مطمئن هستید که می‌خواهید از سیستم خارج شوید؟
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-soft-secondary" data-bs-dismiss="modal">انصراف</button>
+          <button type="button" id="confirmLogoutBtn" class="btn btn-danger">خروج</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let users = [];
+  let filteredUsers = [];
+  let editingUserId = null;
+  let deleteUserId = null;
+
+  const els = {
+    createForm: document.getElementById('createUserForm'),
+    username: document.getElementById('username'),
+    email: document.getElementById('email'),
+    password: document.getElementById('password'),
+    role: document.getElementById('role'),
+    togglePassword: document.getElementById('togglePassword'),
+    formAlert: document.getElementById('formAlert'),
+    formSuccess: document.getElementById('formSuccess'),
+    search: document.getElementById('search'),
+    userCount: document.getElementById('userCount'),
+    tbody: document.getElementById('usersTbody'),
+    addUserBtn: document.getElementById('addUserBtn'),
+    searchUserBtn: document.getElementById('searchUserBtn'),
+    addUserLayer: document.getElementById('addUserLayer'),
+    searchLayer: document.getElementById('searchLayer'),
+    editModal: new bootstrap.Modal(document.getElementById('editModal')),
+    editId: document.getElementById('editId'),
+    editUsername: document.getElementById('editUsername'),
+    editEmail: document.getElementById('editEmail'),
+    editPassword: document.getElementById('editPassword'),
+    editRole: document.getElementById('editRole'),
+    toggleEditPassword: document.getElementById('toggleEditPassword'),
+    editAlert: document.getElementById('editAlert'),
+    saveEditBtn: document.getElementById('saveEditBtn'),
+    deleteModal: new bootstrap.Modal(document.getElementById('deleteModal')),
+    deleteUserLabel: document.getElementById('deleteUserLabel'),
+    confirmDeleteBtn: document.getElementById('confirmDeleteBtn'),
+    logoutBtn: document.getElementById('logoutBtn'),
+    logoutModal: new bootstrap.Modal(document.getElementById('logoutModal')),
+    confirmLogoutBtn: document.getElementById('confirmLogoutBtn'),
+  };
+
+  function switchView(view) {
+    if (view === 'add') {
+      els.addUserLayer.classList.add('active');
+      els.searchLayer.classList.remove('active');
+      els.addUserBtn.classList.add('active');
+      els.searchUserBtn.classList.remove('active');
+    } else {
+      els.addUserLayer.classList.remove('active');
+      els.searchLayer.classList.add('active');
+      els.addUserBtn.classList.remove('active');
+      els.searchUserBtn.classList.add('active');
+    }
+  }
+
+  els.addUserBtn.addEventListener('click', () => switchView('add'));
+  els.searchUserBtn.addEventListener('click', () => switchView('search'));
+
+  // --- بارگیری کاربران از سرور ---
+  async function loadUsersFromServer() {
+    try {
+      const response = await fetch('/api/users');
+      if (!response.ok) throw new Error('خطا در دریافت کاربران');
+      users = await response.json();
+      filteredUsers = [...users];
+      renderTable(filteredUsers);
+    } catch (err) {
+      console.error(err);
+      showAlert(els.formAlert, 'خطا در بارگیری کاربران از سرور.');
+    }
+  }
+
+  function renderTable(list) {
+    els.tbody.innerHTML = '';
+    list.forEach(u => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="fw-semibold">${u.username}</td>
+        <td style="text-align: center;">${u.email}</td>
+        <td style="text-align: center;"><span class="text-muted">${'*'.repeat(Math.max(6, u.password.length))}</span></td>
+        <td style="text-align: center;">${u.role}</td>
+        <td class="text-center">
+          <div class="d-flex justify-content-center gap-2">
+            <button class="btn btn-soft-warning btn-sm" data-action="edit" data-id="${u.id}">ویرایش</button>
+            <button class="btn btn-soft-danger btn-sm" data-action="delete" data-id="${u.id}">حذف</button>
+          </div>
+        </td>`;
+      els.tbody.appendChild(tr);
+    });
+    els.userCount.textContent = list.length;
+  }
+
+  function filterUsers() {
+    const q = els.search.value.trim().toLowerCase();
+    filteredUsers = q ? users.filter(u =>
+      u.username.toLowerCase().includes(q) ||
+      u.email.toLowerCase().includes(q) ||
+      u.role.toLowerCase().includes(q)
+    ) : [...users];
+    renderTable(filteredUsers);
+  }
+
+  function resetCreateForm() {
+    els.username.value = ''; els.email.value = ''; els.password.value = ''; els.role.value = '';
+  }
+
+  function showAlert(el, msg) { el.textContent = msg; el.classList.remove('d-none'); }
+  function hideAlert(el) { el.classList.add('d-none'); el.textContent = ''; }
+
+  // --- افزودن ---
+  els.createForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideAlert(els.formAlert); hideAlert(els.formSuccess);
+    const data = {
+      username: els.username.value.trim(),
+      password: els.password.value,
+      email: els.email.value.trim(),
+      role: els.role.value
+    };
+
+    if (data.username.length < 3) return showAlert(els.formAlert, 'نام کاربری باید حداقل ۳ کاراکتر باشد.');
+    if (!data.email.includes('@')) return showAlert(els.formAlert, 'ایمیل نامعتبر است.');
+    if (data.password.length < 6) return showAlert(els.formAlert, 'رمز عبور باید حداقل ۶ کاراکتر باشد.');
+    if (!data.role) return showAlert(els.formAlert, 'سطح دسترسی را انتخاب کنید.');
+
+    try {
+      const res = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const json = await res.json();
+      if (res.ok) {
+        showAlert(els.formSuccess, json.success);
+        resetCreateForm();
+        await loadUsersFromServer();
+      } else {
+        showAlert(els.formAlert, json.error);
+      }
+    } catch { showAlert(els.formAlert, 'خطا در ارتباط با سرور.'); }
+  });
+
+  // --- ویرایش ---
+  els.tbody.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    const id = btn.dataset.id;
+    const action = btn.dataset.action;
+    const user = users.find(u => u.id === id);
+    if (!user) return;
+
+    if (action === 'edit') {
+      editingUserId = id;
+      els.editId.value = id;
+      els.editUsername.value = user.username;
+      els.editEmail.value = user.email;
+      els.editPassword.value = user.password;
+      els.editRole.value = user.role;
+      hideAlert(els.editAlert);
+      els.editModal.show();
+    } else if (action === 'delete') {
+      deleteUserId = id;
+      els.deleteUserLabel.textContent = user.username;
+      els.deleteModal.show();
+    }
+  });
+
+  els.saveEditBtn.addEventListener('click', async () => {
+    hideAlert(els.editAlert);
+    const id = editingUserId;
+    const data = {
+      username: els.editUsername.value.trim(),
+      password: els.editPassword.value,
+      email: els.editEmail.value.trim(),
+      role: els.editRole.value
+    };
+
+    if (data.username.length < 3) return showAlert(els.editAlert, 'نام کاربری باید حداقل ۳ کاراکتر باشد.');
+    if (!data.email.includes('@')) return showAlert(els.editAlert, 'ایمیل نامعتبر است.');
+    if (data.password.length < 6) return showAlert(els.editAlert, 'رمز عبور باید حداقل ۶ کاراکتر باشد.');
+
+    try {
+      const res = await fetch(`/api/users/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const json = await res.json();
+      if (res.ok) {
+        els.editModal.hide();
+        await loadUsersFromServer();
+      } else {
+        showAlert(els.editAlert, json.error);
+      }
+    } catch { showAlert(els.editAlert, 'خطا در ارتباط با سرور.'); }
+  });
+
+  // --- حذف ---
+  els.confirmDeleteBtn.addEventListener('click', async () => {
+    try {
+      const res = await fetch(`/api/users/${deleteUserId}`, { method: 'DELETE' });
+      const json = await res.json();
+      if (res.ok) {
+        els.deleteModal.hide();
+        await loadUsersFromServer();
+      } else {
+        alert(json.error);
+      }
+    } catch { alert('خطا در حذف.'); }
+  });
+
+  // --- سایر ---
+  els.togglePassword.addEventListener('click', () => {
+    const type = els.password.type === 'password' ? 'text' : 'password';
+    els.password.type = type;
+    els.togglePassword.textContent = type === 'password' ? 'نمایش' : 'مخفی';
+  });
+  els.toggleEditPassword.addEventListener('click', () => {
+    const type = els.editPassword.type === 'password' ? 'text' : 'password';
+    els.editPassword.type = type;
+    els.toggleEditPassword.textContent = type === 'password' ? 'نمایش' : 'مخفی';
+  });
+  els.search.addEventListener('input', filterUsers);
+
+  // --- خروج با تأیید ---
+  els.logoutBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    els.logoutModal.show();
+  });
+
+  els.confirmLogoutBtn.addEventListener('click', function() {
+    window.location.href = '/logout';
+  });
+
+  // --- راه‌اندازی ---
+  (async () => {
+    await loadUsersFromServer();
+    switchView('search');
+  })();
+</script>
+</body>
+</html>
