@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Summarize.md",
+                "file": "Note.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Summarize"
+              "title": "Note"
             }
           }
         ],
@@ -186,8 +186,8 @@
   },
   "active": "d06e7ef4ad5dcabc",
   "lastOpenFiles": [
-    "Note.md",
     "Summarize.md",
+    "Note.md",
     "firtFlask.py",
     "templates/index.html",
     "templates"
